@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Démo SSRF</title>
+</head>
+<body>
+  <h1>Bienvenue !</h1>
+  <button id="ssrfBtn">
+    Voir le stock de chaussures
+  </button>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('ssrfBtn').addEventListener('click', async () => {
+      // Dans cet exemple, nous passons l'URL de la page admin (en localhost)
+      const targetUrl = encodeURIComponent('http://localhost:3000/stock?id=1');
+      try {
+        const response = await fetch(`/api?target=${targetUrl}`);
+        const resultText = await response.text();
+        document.getElementById('result').innerHTML = resultText;
+      } catch (err) {
+        document.getElementById('result').innerText = "Erreur: " + err;
+      }
+    });
+  </script>
+</body>
+</html>
+<style>
+    #ssrfBtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border: none;
+        border-radius: 12px;
+    }
+
+    #ssrfBtn img {
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+</style>
